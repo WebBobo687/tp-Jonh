@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Custome</title>
+
+    <!-- <script src="./index.js"></script> -->
+  </head>
+  <body>
+    <header></header>
+
+    <main>
+      <table>
+        <thead>
+            <tr>
+                <th>Id:</th>
+                <th>Prénom:</th>
+                <th>Nom:</th>
+                <th>Emplois:</th>
+                <th>Email:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="employees">
+            </tr>
+        </tbody>
+      </table>
+      <p id="share"></p>
+      <button onclick="list_employees()">click</button>
+    </main>
+
+    <footer></footer>
+  </body>
+  <script>
+    function list_employees() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var reponse = JSON.parse(this.responseText);
+                for (i = 0; i < reponse.length; i++){
+                    var obj = reponse[i];
+                    console.log(obj);
+                    document.getElementById('employees').innerHTML +=
+                        '<td>' + obj.name + '</td>';
+                }
+            } else {
+            console.log('out');
+            }
+        };
+
+      xhttp.open(
+        "GET",
+        "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees",
+        true
+      );
+
+      xhttp.send();
+    }
+  </script>
+</html>
