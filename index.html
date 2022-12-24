@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>API Custome</title>
 
     <!-- <script src="./index.js"></script> -->
@@ -40,6 +42,7 @@
     <header></header>
 
     <main>
+      <button onclick="show_modal()">+</button>
       <table>
         <thead>
             <tr>
@@ -53,13 +56,40 @@
         <tbody id="employees">
         </tbody>
       </table>
-      <p id="share"></p>
-      <button onclick="list_employees()">click</button>
+      
+
+      <div id="modal" class="w3-modal">
+        <div class="w3-modal-content">
+          <header class="w3-container w3-teal"> 
+            <span onclick="document.getElementById('modal').style.display='none'" 
+            class="w3-button w3-display-topright">&times;</span>
+            <h2>Modal Header</h2>
+          </header>
+          <div>
+            <form action="" method="get">
+              <label for="name">Prénom</label>
+              <input type="text" name="name" id="name" required>
+              <label for="last-name">Nom</label>
+              <input type="text" name="last_name" id="last_name" required>
+              <label for="job">Emplois</label>
+              <input type="text" name="job" id="job" required>
+              <label for="email">Email</label>
+              <input type="email" name="email" id="email" required>
+              <button onclick="add_employe()">Ajouter</button>
+            </form>
+          </div>
+          <footer class="w3-container w3-teal">
+            <p>Modal Footer</p>
+          </footer>
+        </div>
+      </div>
+
     </main>
 
     <footer></footer>
   </body>
   <script>
+
     function list_employees() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -67,6 +97,7 @@
                 var reponse = JSON.parse(this.responseText);
                 for (i = 0; i < reponse.length; i++){
                   var obj = reponse[i];
+                  // création du tableau des employés
                     document.getElementById('employees').innerHTML +=
                         '<tr id= "' + obj.id + '">' + 
                           '<td>' + obj.id + '</td>' +
@@ -74,12 +105,13 @@
                           '<td>' + obj.last_name + '</td>' +
                           '<td>' + obj.job_title + '</td>' +
                           '<td>' + obj.email + 
-                            '<button onclick="del_employe()" > X </buton>' + 
+                          "<button onclick = del_employe(event)> X </button> " +   
+
                           '</td>' +
                         '</tr>';
                 }
             } else {
-            console.log('out');
+            // console.log('out');
             }
         };
 
@@ -92,15 +124,13 @@
       xhttp.send();
     }
     
-    function del_employe() {
+    function del_employe(event) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                var reponse = JSON.parse(this.responseText);
-                for (i = 0; i < reponse.length; i++){
-                  var obj = reponse[i];
-                  console.log(document.getElementById('"'+obj.id+'"'));
-                }
+              event.preventDefault(); 
+              var id = document.querySelector('id')
+              console.log(id); 
             } else {
             console.log('out');
             }
@@ -115,6 +145,50 @@
       xhttp.send();
     }
     
+    function add_employe () {
+      
+      var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+        } else { 
+          console.log(this.readyState)
+        }
+      }
+
+      var name = document.getElementById("name").value
+      var last_name = document.getElementById("last_name").value
+      var job =document.getElementById("job").value
+      var email =document.getElementById("email").value
+
+      // Vérification des valeurs de champs pour en laisser aucun vide
+      if (name != '' && last_name != '' && job != '' && email != '') {
+
+        xhttp.open (
+          "POST",
+          "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees",
+          true
+          );
+  
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send(
+            "name="+name
+            +"&"+
+            "last_name="+last_name
+            +"&"+
+            "email="+email
+            +"&"+
+            "job_title="+job
+          );
+      } else {
+        alert('Il faut remplir tout les champs!!')
+      }
+      
+    }
+    
+    // modal
+    function show_modal () {
+      document.getElementById('modal').style.display='block'
+    }
 
     window.onload = list_employees();
   </script>
