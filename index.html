@@ -10,6 +10,10 @@
 
     <!-- <script src="./index.js"></script> -->
     <style>
+      #add:hover:after {
+      content: " ajouter un employé";
+      }
+
       table {
         font-family: Arial, Helvetica, sans-serif;
         border-collapse: collapse;
@@ -36,13 +40,17 @@
       table button {
         float: right;
       }
+
+      table tr {
+        width: 80%;
+      }
       </style>
   </head>
   <body>
     <header></header>
 
     <main>
-      <button onclick="show_modal()">+</button>
+      <button onclick="show_modal()" id="add">+</button>
       <table>
         <thead>
             <tr>
@@ -90,6 +98,7 @@
   </body>
   <script>
 
+    //AFFICHE LA LISTE DES EMPLOYES----------------------------------------/
     function list_employees() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
@@ -100,14 +109,13 @@
                   // création du tableau des employés
                     document.getElementById('employees').innerHTML +=
                         '<tr id= "' + obj.id + '">' + 
-                          '<td>' + obj.id + '</td>' +
+                          '<td onClick= modified_employe()>' + obj.id +  '</td>' +
                           '<td>' + obj.name + '</td>' +
                           '<td>' + obj.last_name + '</td>' +
                           '<td>' + obj.job_title + '</td>' +
                           '<td>' + obj.email + 
-                          "<button onclick = del_employe(event)> X </button> " +   
-
                           '</td>' +
+                          "<button onclick = del_employe(event)> X </button> " +   
                         '</tr>';
                 }
             } else {
@@ -124,27 +132,58 @@
       xhttp.send();
     }
     
-    function del_employe(event) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-              event.preventDefault(); 
-              var id = document.querySelector('id')
-              console.log(id); 
-            } else {
-            console.log('out');
-            }
-        };
-
-      xhttp.open(
-        "GET",
-        "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees",
-        true
-      );
-
-      xhttp.send();
+    //MODIFIER LES DONNEES D'UN EMPLOYE------------------------------------/
+    function modified_employe (event) {
+  
+  var xhttp = new XMLHttpRequest();  
+  
+  xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      event.preventDefault();
+      var employe = event.target
+      let id= employe.id
+      show_modal()
+      // document.getElementById('name').value = employe.name
+      // document.getElementById('last_name').value = employe.last_name
+      // document.getElementById('email').value = employe.email
+      console.log(id)
+      
+    } else {
+      
     }
+  }
+
+  xhttp.open (
+    "GET",
+    "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees",
+    true
+  );
+  xhttp.send();
+}
+
+    //EFFACE UN EMPLOE-----------------------------------------------------/
+    // function del_employe(event) {
+    //     var xhttp = new XMLHttpRequest();
+    //     xhttp.onreadystatechange = function () {
+    //         if (this.readyState == 4 && this.status == 200) {
+    //           event.preventDefault(); 
+    //           var id = document.querySelector('id')
+    //           console.log(id); 
+    //         } else {
+    //         console.log('out');
+    //         }
+    //     };
+
+    //   xhttp.open(
+    //     "GET",
+    //     "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees",
+    //     true
+    //   );
+
+    //   xhttp.send();
+    // }
     
+    //AJOUTER UN EMPLOYE---------------------------------------------------/
     function add_employe () {
       
       var xhttp = new XMLHttpRequest();
@@ -185,7 +224,7 @@
       
     }
     
-    // modal
+    //AFFICHER LA MODAL----------------------------------------------------/
     function show_modal () {
       document.getElementById('modal').style.display='block'
     }
