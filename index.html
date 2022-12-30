@@ -5,56 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- CSS -->
+    <link rel="stylesheet" href="./Index.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- JAVASCRIPT -->
+    <script type="text/javascript" src="./index.js"></script>
+
     <title>API Custome</title>
-
-    <!-- <script src="./index.js"></script> -->
-    <style>
-      #addEmploye:hover:after {
-      content: " ajouter un employé";
-      }
-
-      #del:hover:after {
-        content: "supprimer cette employé"
-      }
-
-      table {
-        font-family: Arial, Helvetica, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-      }
-      
-      table td, table th {
-        border: 1px solid #ddd;
-        padding: 8px;
-      }
-      
-      table tr:nth-child(even){background-color: #f2f2f2;}
-      
-      table tr:hover {background-color: #ddd;}
-      
-      table th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: #04AA6D;
-        color: white;
-      }
-
-      table button {
-        float: right;
-      }
-
-      table tr {
-        width: 80%;
-      }
-      </style>
   </head>
   <body>
     <header></header>
 
     <main>
-      <button onclick="show_modalAdd()" id="addEmploye">+</button>
+      
       <table>
         <thead>
             <tr>
@@ -62,7 +24,9 @@
                 <th>Prénom:</th>
                 <th>Nom:</th>
                 <th>Emplois:</th>
-                <th>Email:</th>
+                <th>Email:
+                  <button onclick="show_modalAdd()" id="addEmploye">+ Ajouter un employer</button>
+                </th>
             </tr>
         </thead>
         <tbody id="employees">
@@ -72,25 +36,28 @@
 
       <div id="modal" class="w3-modal">
         <div class="w3-modal-content">
+          
           <header class="w3-container w3-teal"> 
             <!-- permet de fermer la modal quand on click sur la X -->
             <span onclick="document.getElementById('modal').style.display='none'" 
             class="w3-button w3-display-topright">&times;</span>
+            <!-- ---------------------------------------------------------- -->
             <h2 id="header">Ajouter un employe</h2>
           </header>
-          <div>
-            <form action="" method="get">
-              <label for="name">Prénom</label>
-              <input type="text" name="name" id="name" required>
-              <label for="last-name">Nom</label>
-              <input type="text" name="last_name" id="last_name" required>
-              <label for="job">Emplois</label>
-              <input type="text" name="job" id="job" required>
-              <label for="email">Email</label>
-              <input type="email" name="email" id="email" required>
-              <button id="add" onclick="add_employe()">Ajouter</button>
-              <button id="modify" onclick="updateData()">mettre à jour</button>
-            </form>
+
+          <div id="input">
+
+            <label for="name">Prénom:</label>
+            <input type="text" name="name" id="name" required>
+            <label for="last-name">Nom:</label>
+            <input type="text" name="last_name" id="last_name" required>
+            <label for="job">Emplois:</label>
+            <input type="text" name="job" id="job" required>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+
+            <button id="add" onclick="add_employe()">Ajouter</button>
+            <button id="modify" onclick="updateData()">mettre à jour</button>
           </div>
         </div>
 
@@ -100,196 +67,4 @@
 
     <footer></footer>
   </body>
-  <script>
-
-    //AFFICHE LA LISTE DES EMPLOYES----------------------------------------/
-    function list_employees() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var reponse = JSON.parse(this.responseText);
-                for (i = 0; i < reponse.length; i++){
-                  var obj = reponse[i];
-                  // création du tableau des employés
-                    document.getElementById('employees').innerHTML +=
-                        '<tr id= "">' + 
-                          '<td id= "">' + obj.id +  '</td>' +
-                          '<td id= "">' + obj.name + '</td>' +
-                          '<td id= "">' + obj.last_name + '</td>' +
-                          '<td id= "">' + obj.job_title + '</td>' +
-                          '<td id= "">' + obj.email + 
-                            "<button onclick = del_employe(event) id='" + obj.id + "' class='del'> X </button> " +
-                            "<button onclick = modify_employe(event) id='"+ obj.id +"'> Modifier </button> " +   
-                          '</td>' +
-                        '</tr>';
-                }
-            } else {
-            // console.log('out');
-            }
-        };
-
-      xhttp.open(
-        "GET",
-        "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees",
-        true
-      );
-
-      //DELETE /api/v1/employees/:id
-
-      xhttp.send();
-    }
-    
-    //MODIFIER LES DONNEES D'UN EMPLOYE------------------------------------/
-    function modify_employe (event) {
-  
-      var xhttp = new XMLHttpRequest();  
-      var employe = event.target
-      let id= employe.id
-      
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          show_modalModify()
-          var info=JSON.parse(this.response)
-          document.getElementById('name').value=info.name
-          document.getElementById('last_name').value=info.last_name
-          document.getElementById('job').value=info.job_title
-          document.getElementById('email').value=info.email
-
-          updateData(id)
-          
-        } else {
-          
-        }
-      }
-
-      xhttp.open (
-        "GET",
-        "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees/" + id,
-        true
-      );
-      xhttp.send();
-
-    }
-
-    //Enoyer les nouvelles données
-    function updateData (id) {
-      
-      var xhttp = new XMLHttpRequest();
-      
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          if (JSON.parse(this.responseText)) {
-            let result = JSON.parse(this.responseText)
-            document.getElementById('name').value = result.data.name;
-            document.getElementById('last_name').value = result.data.last_name;
-            document.getElementById('email').value = result.data.email;
-            document.getElementById('job').value = result.data.job_title;
-            
-          }
-        } else { 
-          console.log('by')
-        }
-      }
-      
-      xhttp.open (
-        "PUT",
-        "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees/"+ id,
-        true
-        );
-        xhttp.send(
-          "id="+ id
-          +"&"+
-          "name="+ document.getElementById("name").value
-          +"&"+
-          "last_name="+ document.getElementById("last_name").value
-          +"&"+
-          "email="+ document.getElementById("email").value
-          +"&"+
-          "job_title="+ document.getElementById('job').value
-        );
-      }
-
-    //EFFACE UN EMPLOE-----------------------------------------------------/
-    function del_employe(event) {
-        var xhttp = new XMLHttpRequest();
-        //get l'id de lélément
-        var employe = event.target
-        let id= employe.id
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-              alert("l'employer n° "+id+" est supprimer")
-              location.reload();
-            } else {
-            console.log('out');
-            }
-        };
-
-      xhttp.open(
-        "DELETE",
-        "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees/"+ id,
-        true
-      );
-      xhttp.send();
-    }
-    
-    //AJOUTER UN EMPLOYE---------------------------------------------------/
-    function add_employe () {
-      
-      var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-        } else { 
-          console.log(this.readyState)
-        }
-      }
-
-      var name = document.getElementById("name").value
-      var last_name = document.getElementById("last_name").value
-      var job =document.getElementById("job").value
-      var email =document.getElementById("email").value
-
-      // Vérification des valeurs de champs pour en laisser aucun vide
-      if (name != '' && last_name != '' && job != '' && email != '') {
-
-        xhttp.open (
-          "POST",
-          "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees",
-          true
-          );
-  
-          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-          xhttp.send(
-            "name="+name
-            +"&"+
-            "last_name="+last_name
-            +"&"+
-            "email="+email
-            +"&"+
-            "job_title="+job
-          );
-      } else {
-        alert('Il faut remplir tout les champs!!')
-      }
-      
-    }
-    
-    //AFFICHER LA MODAL D'AJOUT----------------------------------------------------/
-    function show_modalAdd () {
-      document.getElementById('modal').style.display='block'
-      document.getElementById('add').style.display='block'
-      document.getElementById('modify').style.display='none'
-      document.getElementById('header').innerText='Ajouter un employe'
-    }
-
-    //AFFICHER LA MODAL DE MODIFICATION----------------------------------------------------/
-    function show_modalModify () {
-      document.getElementById('modal').style.display='block'
-      document.getElementById('add').style.display='none'
-      document.getElementById('modify').style.display='block'
-      document.getElementById('header').innerText='modifier un employe'
-    }
-
-    //affiche les employés dès que la page est chargée
-    window.onload = list_employees();
-  </script>
 </html>
