@@ -227,7 +227,7 @@ function show_modalModify () {
   document.getElementById('modal').style.display='block'
   document.getElementById('add').style.display='none'
   document.getElementById('modify').style.display='block'
-  document.getElementById('header').innerText='modifier un employe'
+  document.getElementById('header').innerText='modifier un employé'
 }
 
 //affiche les employés dès que la page est chargée
