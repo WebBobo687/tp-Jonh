@@ -52,7 +52,7 @@ function add_employe () {
   xhttp.onreadystatechange = function () {
     console.log(this.readyState)
     if (this.readyState == 4 && this.status == 201) {
-      alert("L'employer à bien était ajouter");
+      alert("L'employé à bien était ajouter");
       location.reload();
     } else { 
       console.log('out of add function');
@@ -67,7 +67,7 @@ function add_employe () {
     let errorInput =''
 
     if(!emailPattern.test(email)) {
-      errorInput += "- Email invalide. Ex : monAdresse@email.com !\n";
+      errorInput += "- Email invalide. Ex : monAdresse@email.com !";
     } else {
       console.log("it's ok")
     }
@@ -105,23 +105,25 @@ function del_employe(event) {
   //get l'id de lélément
   var employe = event.target
   id= employe.id
+  let confirmMessage = "Êtes-vous sûr de vouloir supprimer l'employé N°" + id + " ?";
 
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      alert("l'employer n° "+id+" est supprimer")
-      location.reload();
-    } else {
-      console.log('out of del function');
-    }
-  };
-    
-  xhttp.open(
-    "DELETE",
-    "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees/"+ id,
-    true
-  );
-  
-    xhttp.send();
+  if(confirm(confirmMessage)){
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        alert("l'employé n° "+ id +" est supprimer")
+        location.reload();
+      } else {
+        console.log('out of del function');
+      }
+    };
+      
+    xhttp.open(
+      "DELETE",
+      "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees/"+ id,
+      true
+    );
+      xhttp.send();
+  }
 }
 
 //MODIFIER LES DONNEES D'UN EMPLOYE------------------------------------/
@@ -166,7 +168,7 @@ function updateData () {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
 
-      alert("L'employer n°"+id+' à bien était modifier');
+      alert("L'employé n°"+ id +' à bien était modifier');
       location.reload();
 
     } else { 
