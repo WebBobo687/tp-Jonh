@@ -23,9 +23,9 @@
                 <th>Id:</th>
                 <th>Prénom:</th>
                 <th>Nom:</th>
-                <th>Emplois:</th>
+                <th>Emploi:</th>
                 <th>Email:
-                  <button onclick="show_modalAdd()" id="addEmploye">+ Ajouter un employer</button>
+                  <button onclick="show_modalAdd()" id="addEmploye">+ Ajouter un employé</button>
                   <button onclick="location.reload();" id="addEmploye">Rafraichir la liste</button>
                 </th>
             </tr>
@@ -43,7 +43,7 @@
             <span onclick="document.getElementById('modal').style.display='none'" 
             class="w3-button w3-display-topright">&times;</span>
             <!-- ---------------------------------------------------------- -->
-            <h2 id="header">Ajouter un employe</h2>
+            <h2 id="header">Ajouter un employé</h2>
           </header>
 
           <div id="input">
@@ -52,7 +52,7 @@
             <input type="text" name="name" id="name" required>
             <label for="last-name">Nom:</label>
             <input type="text" name="last_name" id="last_name" required>
-            <label for="job">Emplois:</label>
+            <label for="job">Emploi:</label>
             <input type="text" name="job" id="job" required>
             <label for="email">Email:</label>
             <input type="email" name="email" id="email" required>
