@@ -62,22 +62,37 @@ function add_employe () {
   // Vérification des valeurs de champs pour en laisser aucun vide
   if (name != '' && last_name != '' && job != '' && email != '') {
 
-    xhttp.open (
-      "POST",
-      "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees",
-      true
-      );
+    const emailPattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}$/;
 
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send(
-        "name="+name
-        +"&"+
-        "last_name="+last_name
-        +"&"+
-        "email="+email
-        +"&"+
-        "job_title="+job
-      );
+    let errorInput =''
+
+    if(!emailPattern.test(email)) {
+      errorInput += "- Email invalide. Ex : monAdresse@email.com !\n";
+    } else {
+      console.log("it's ok")
+    }
+    
+    if(errorInput=='') {
+      xhttp.open (
+        "POST",
+        "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees",
+        true
+        );
+  
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(
+          "name="+name
+          +"&"+
+          "last_name="+last_name
+          +"&"+
+          "email="+email
+          +"&"+
+          "job_title="+job
+        );
+    } else {
+      alert(errorInput)
+    }
+
   } else {
     alert('Il faut remplir tout les champs!!')
   } 
@@ -89,7 +104,7 @@ function del_employe(event) {
 
   //get l'id de lélément
   var employe = event.target
-  let id= employe.id
+  id= employe.id
 
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
@@ -130,9 +145,6 @@ function modify_employe (event) {
       console.log('out of modif function')
     }
   }
-  if (xhttp.method == 'PUT'){
-    updateData(id)
-  }
   
   xhttp.open (
     "GET",
@@ -166,22 +178,37 @@ function updateData () {
   // Vérification des valeurs de champs pour en laisser aucun vide
   if (name != '' && last_name != '' && job != '' && email != '') {
 
-    xhttp.open (
-      "PUT",
-      "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees/"+id,
-      true
-      );
+    const emailPattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}$/;
 
-      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhttp.send(
-        "name="+name
-        +"&"+
-        "last_name="+last_name
-        +"&"+
-        "email="+email
-        +"&"+
-        "job_title="+job
-      );
+    let errorInput =''
+
+    if(!emailPattern.test(email)) {
+      errorInput += "- Email invalide. Ex : monAdresse@email.com !\n";
+    } else {
+      console.log("it's ok")
+    }
+    
+    if(errorInput=='') {
+      xhttp.open (
+        "PUT",
+        "https://6057e432c3f49200173ad08d.mockapi.io/api/v1/employees/"+id,
+        true
+        );
+  
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(
+          "name="+name
+          +"&"+
+          "last_name="+last_name
+          +"&"+
+          "email="+email
+          +"&"+
+          "job_title="+job
+        );
+    } else {
+      alert(errorInput)
+    }
+
   } else {
     alert('Il faut remplir tout les champs!!')
   } 
