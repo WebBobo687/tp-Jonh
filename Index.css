@@ -1,5 +1,5 @@
 /*------button------*/
-#addEmploye:hover, .del:hover, .modif:hover {
+#addEmploye:hover, #refresh:hover, .del:hover, .modif:hover {
     cursor: pointer;
     background-color: rgb(204, 202, 202);
 }
